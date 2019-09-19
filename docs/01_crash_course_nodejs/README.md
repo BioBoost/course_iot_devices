@@ -77,7 +77,77 @@ Check it out using your browser at [http://localhost:3000](http://localhost:3000
 
 ### Routing
 
+* Serving different routes
+
+```js
+const http = require('http');
+const url = require('url');
+
+const server = http.createServer();
+
+const set_response = (response, content) => {
+  response.writeHead(200, {'Content-Type':'text/plain'});
+  response.write(content);
+}
+
+server.on('request', (request,response) => {
+  let path = url.parse(request.url).pathname;
+  console.log(path);
+
+  if (path === '/') {
+    set_response(response, 'Hello world');
+  } else if (path === '/about') {
+    set_response(response, 'Created by VIVES peoples');
+  } else {
+    response.writeHead(404, {'Content-Type':'text/plain'});
+    response.write('Error page');
+  }
+  response.end();
+});
+
+server.listen(3000, () => {
+  console.log('Node server created at port 3000');
+});
+```
+
+* Routes:
+  * [http://localhost:3000](http://localhost:3000)
+  * [http://localhost:3000/about](http://localhost:3000/about)
+
+* url package breaks up the URL
+
+![URL parts](./img/url_parts.png)
+
+* Fun to do, but nobody does it like this
+
 ### Express Routing
+
+* Use a framework such as Express for building APIs and such
+* Install using `npm install express --save`
+
+```js
+const express = require('express');
+const app = express();
+const PORT = 3000;
+
+//Basic routes
+app.get('/', (request,response) => {
+   response.send('Hello World');
+});
+
+app.get('/about',(request,response) => {
+   response.send('This app was made by VIVES peoples');
+});
+
+//Express error handling middleware
+app.use((request,response) => {
+   response.type('text/plain');
+   response.status(505);
+   response.send('Error page');
+});
+
+app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
+```
 
 ## Interval and TimeOut
 
@@ -179,6 +249,7 @@ https://www.w3schools.com/nodejs/nodejs_modules.asp
 
 ## Promises
 
+https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-promise-27fc71e77261
 https://nodejs.dev/understanding-javascript-promises
 
 ## Emitting Events
@@ -221,7 +292,18 @@ const build_a_house = () => {
 }
 
 build_a_house()
+console.log("Ready?")
 ```
+
+:::codeoutput
+<pre>
+Building a house
+Laying foundations
+Digging a basement
+Building walls
+Ready?
+</pre>
+:::
 
 ### Example using Timeout
 
@@ -244,6 +326,16 @@ const build_a_house = () => {
 build_a_house()
 console.log("Ready?")
 ```
+
+:::codeoutput
+<pre>
+Building a house
+Laying foundations
+Building walls
+Ready?
+Digging a basement
+</pre>
+:::
 
 ### Message Queue
 
@@ -289,3 +381,13 @@ build_a_house()
 console.log("Ready?")
 ```
 
+:::codeoutput
+<pre>
+Building a house
+Laying foundations
+Building walls
+Ready?
+Lets put on a roof
+Digging a basement
+</pre>
+:::
