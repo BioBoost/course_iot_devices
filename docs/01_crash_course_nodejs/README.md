@@ -5,7 +5,9 @@ title: 01 - Crash Course Node.js
 
 # Chapter 01 - Crash Course Node.js
 
-## What is Node.js
+## About Node.js
+
+### What is Node.js
 
 * Open source server environment
 * Free
@@ -14,37 +16,37 @@ title: 01 - Crash Course Node.js
 
 Node isn't a silver bullet, it's not always the best solution for every project.
 
-## Before Node.js
+### Before Node.js
 
 * WebApps are written in client/server model
 * Client requests file from server
 * Server gets file (waits) from filesystem and returns it, then closes connection
 * Ready for new connection
 
-### What about multiple clients
+#### What about multiple clients
 
 * Threads
 * Running multiple operations concurrently
 
 Starting up new threads had a cost (overhead)
 
-## Here came Node.js
+### Here came Node.js
 
 * Client requests file from server
 * Node.js requests the file from the file system but doesn't wait
 * Ready to handle the next request.
 * When the file system has opened and read the file, the server is notified and it returns the content to the client.
 
-## Event Loop
+## The Event Loop
 
 ![Event Loop](./img/event_loop.png)
 
-## Node.js is single-threaded
+### Node.js is single-threaded
 
 * Basically program that waits for events and dispatches them
 * JS is single-threaded and so is Node
 
-### Background workers
+#### Background workers
 
 * Single thread
     * Single thing happening at a time
@@ -52,8 +54,7 @@ Starting up new threads had a cost (overhead)
 * Work is delegated to background workers
 * Workers emit events when finished
 
-
-## Call stack
+### Call stack
 
 <!-- https://nodejs.dev/the-nodejs-event-loop -->
 
@@ -74,7 +75,9 @@ const build_a_house = () => {
 build_a_house()
 ```
 
-## Timeout
+### Example using Timeout
+
+Basically something async that takes time to do.
 
 ```js
 const foundations = () => console.log('Laying foundations')
@@ -91,22 +94,23 @@ const build_a_house = () => {
 }
 
 build_a_house()
+console.log("Ready?")
 ```
 
-## Message Queue
+### Message Queue
 
 * Timer is started
 * When expired, callback is placed in Message Queue
     * Contains user-initiated events
     * Message Queue is processed if call stack is empty
 
-### Call stack get priority
+#### Call stack get priority
 
 * Event loop gives priority to call stack
     * It first processes everything it finds in the call stack
     * If call stack is empty it picks things from the Message Queue
 
-## Job Queue
+### Job Queue
 
 * ECMAScript 2015 introduced the concept of the Job Queue
 * Used by Promises.
@@ -114,7 +118,7 @@ build_a_house()
     * rather than being put at the end of the call stack.
 * Promises that resolve before the current function ends will be executed right after the current function.
 
-### An example
+#### An example
 
 ```js
 const foundations = () => console.log('Laying foundations')
@@ -134,5 +138,6 @@ const build_a_house = () => {
 }
 
 build_a_house()
+console.log("Ready?")
 ```
 
