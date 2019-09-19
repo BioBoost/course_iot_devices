@@ -151,6 +151,24 @@ app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
 
 ## Interval and TimeOut
 
+* Timeout
+  * Call a function after number of milliseconds
+
+```js
+setTimeout(() => {
+  console.log("!")
+}, 1000);
+```
+
+* Interval
+  * Call a function every number of milliseconds
+
+```js
+setInterval(() => {
+  console.log("!")
+}, 1000);
+```
+
 ## Classes
 
 ## Arrow functions
