@@ -491,3 +491,29 @@ Lets put on a roof
 Digging a basement
 </pre>
 :::
+
+### Messing Things Up
+
+```js
+const foundations = () => console.log('Laying foundations')
+
+const basement = () => console.log('Digging a basement')
+
+const walls = () => console.log('Building walls')
+
+const build_a_house = () => {
+  console.log('Building a house')
+  foundations()
+  setTimeout(basement, 0)       // defers function
+  new Promise((resolve, reject) =>
+    resolve('Lets put on a roof')
+  ).then(resolve => console.log(resolve))
+  walls()
+}
+
+build_a_house()
+console.log("Ready?")
+
+// Messing with the Event Loop
+while(true){}
+```
