@@ -171,6 +171,11 @@ setInterval(() => {
 
 ## Classes
 
+* No private methods
+* `constructor`
+* No multiple inheritance
+* Attributes: `this.`
+
 ## Arrow functions
 
 * One of the most heralded features in modern JavaScript
@@ -263,7 +268,45 @@ My Test Object
 
 ## Modules
 
+* Consider modules to be the same as JavaScript libraries.
+* A set of functions you want to include in your application.
+* Built-in modules: [reference](https://www.w3schools.com/nodejs/ref_modules.asp)
+
+### Including
+
+* To include a module, use the `require()` function with the name of the module
+
+```js
+const http = require('http');
+```
+
+### Creating Modules
+
+* You can create your own modules
+* Use the `exports` keyword to make classes, function, ... available outside the module file.
+* Use `require('./my_module')` to include the module
+
 https://www.w3schools.com/nodejs/nodejs_modules.asp
+
+```js
+// logger.js
+class Logger {
+  static log(message) {
+    console.log("Logger: " + message)
+  }
+}
+
+module.exports = Logger;
+```
+
+```js
+//server.js
+const Logger = require('./logger')
+
+setTimeout(() => {
+  Logger.log("?")
+}, 1000);
+```
 
 ## Promises
 
@@ -272,7 +315,46 @@ https://nodejs.dev/understanding-javascript-promises
 
 ## Emitting Events
 
-https://www.w3schools.com/nodejs/nodejs_events.asp
+* Node.js has a built-in module, called "Events"
+* Allows firing and listening for own events
+* By extending the `EventEmitter` class, we can listen for events on instances of our class
+
+```js
+//ticker.js
+const EventEmitter = require('events');
+
+class Ticker extends EventEmitter {
+
+  constructor() {
+    super();
+    this.seconds = 0;
+    this.minutes = 0;
+
+    setInterval(() => {
+      this.seconds++;
+      this.emit('second', { seconds: this.seconds });
+    }, 1000);
+
+    setInterval(() => {
+      this.minutes++;
+      this.emit('minute', { minutes: this.minutes });
+    }, 60000);
+  }
+
+}
+
+module.exports = Ticker;
+```
+
+```js
+//app.js
+const Ticker = require('./ticker');
+
+let tick = new Ticker();
+
+tick.on('second', (event) => console.log("Second passed " + JSON.stringify(event)));
+tick.on('minute', (event) => console.log("Minute passed " + JSON.stringify(event)));
+```
 
 ## The Event Loop
 
@@ -362,7 +444,7 @@ Digging a basement
   * Contains user-initiated events
   * Message Queue is processed if call stack is empty
 
-#### Call stack get priority
+#### Call stack gets priority
 
 * Event loop gives priority to call stack
   * It first processes everything it finds in the call stack
