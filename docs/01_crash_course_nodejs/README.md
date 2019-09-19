@@ -26,9 +26,8 @@ Node isn't a silver bullet, it's not always the best solution for every project.
 #### What about multiple clients
 
 * Threads
-* Running multiple operations concurrently
-
-Starting up new threads had a cost (overhead)
+  * Running multiple operations concurrently
+* Starting up new threads had a cost (overhead)
 
 ### Here came Node.js
 
@@ -36,6 +35,65 @@ Starting up new threads had a cost (overhead)
 * Node.js requests the file from the file system but doesn't wait
 * Ready to handle the next request.
 * When the file system has opened and read the file, the server is notified and it returns the content to the client.
+
+## Creating Apps
+
+* Create a folder
+* `npm init` to setup a `package.json` file
+* Create entry point for example `server.js` and add `console.log("Hello World!")`
+
+## Basic WebApps
+
+* Writing web apps with Node involves writing event handlers
+  * Functions that get called when certain Node events occur.
+
+### http server
+
+Run using `npm start` (if script is configured) or `node server.js`.
+
+```js
+const http = require('http');
+const server = http.createServer();
+
+server.on('request', (request, response) => {
+   response.writeHead(200, {'Content-Type':'text/plain'});
+   response.write('Hello world');
+   response.end();
+});
+
+server.listen(3000, () => {
+  console.log('Node server created at port 3000');
+});
+```
+
+Check it out using your browser at [http://localhost:3000](http://localhost:3000).
+
+### Callbacks everywhere
+
+* Functions that respond to events
+* Node.js is a single threaded environments
+* Almost everything works with callbacks
+  * Better get used to it
+
+### Routing
+
+### Express Routing
+
+## Interval and TimeOut
+
+## Classes
+
+## Modules
+
+https://www.w3schools.com/nodejs/nodejs_modules.asp
+
+## Promises
+
+https://nodejs.dev/understanding-javascript-promises
+
+## Emitting Events
+
+https://www.w3schools.com/nodejs/nodejs_events.asp
 
 ## The Event Loop
 
@@ -49,8 +107,8 @@ Starting up new threads had a cost (overhead)
 #### Background workers
 
 * Single thread
-    * Single thing happening at a time
-    * Simplifies programming without needing to worry about concurrency issues
+  * Single thing happening at a time
+  * Simplifies programming without needing to worry about concurrency issues
 * Work is delegated to background workers
 * Workers emit events when finished
 
@@ -101,21 +159,21 @@ console.log("Ready?")
 
 * Timer is started
 * When expired, callback is placed in Message Queue
-    * Contains user-initiated events
-    * Message Queue is processed if call stack is empty
+  * Contains user-initiated events
+  * Message Queue is processed if call stack is empty
 
 #### Call stack get priority
 
 * Event loop gives priority to call stack
-    * It first processes everything it finds in the call stack
-    * If call stack is empty it picks things from the Message Queue
+  * It first processes everything it finds in the call stack
+  * If call stack is empty it picks things from the Message Queue
 
 ### Job Queue
 
 * ECMAScript 2015 introduced the concept of the Job Queue
 * Used by Promises.
 * A way to execute the result of an async function as soon as possible
-    * rather than being put at the end of the call stack.
+  * rather than being put at the end of the call stack.
 * Promises that resolve before the current function ends will be executed right after the current function.
 
 #### An example
