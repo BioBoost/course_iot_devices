@@ -83,6 +83,96 @@ Check it out using your browser at [http://localhost:3000](http://localhost:3000
 
 ## Classes
 
+## Arrow functions
+
+* One of the most heralded features in modern JavaScript
+* Sometimes called 'fat arrow' functions
+* Utilizing the new token `=>`
+
+### Benefits
+
+* A very clean concise syntax
+* More intuitive scoping and `this` binding.
+
+### What are they
+
+* Anonymous functions with their own special syntax
+* Operate in the context of their enclosing scope - ie the function or other code where they are defined.
+
+### Example
+
+* A list of arguments within parenthesis, followed by a 'fat arrow' `=>`, followed by a function body.
+
+```js
+const add = (a, b) => { return a + b };
+//...
+let x = add(3, 8);
+console.log(x);
+```
+
+* If the function body is a single expression, you can leave off the brackets and put it inline. The results of the expression will be returned by the function.
+
+```js
+const add = (a, b) => a + b;
+//...
+let x = add(3, 8);
+console.log(x);
+```
+
+* If there is only a single argument, you can even leave off the parenthesis around the argument.
+
+```js
+const first = array => array[0];
+//...
+let x = first([99, 32, 0]);
+console.log(x);
+```
+
+### Enclosing Scope Context
+
+* Unlike every other form of function, arrow functions do not have their own execution context.
+* Practically, this means that both `this` and `arguments` are inherited from their parent function.
+
+```js
+const myObject = {
+  name: 'My Test Object',
+  createAnonymFunction: function() {
+    return function() {
+      console.log(this.name);
+      console.log(arguments);
+    };
+  },
+
+  createArrowFunction: function() {
+    return () => {
+      console.log(this.name);
+      console.log(arguments);
+    };
+  }
+};
+
+const anon = myObject.createAnonymFunction('hello', 'world');
+const arrow = myObject.createArrowFunction('hello', 'world');
+
+console.log("Anonymous:");
+anon();
+
+console.log("\r\nArrow:");
+arrow();
+```
+
+::: codeoutput
+<pre>
+Anonymous:
+undefined
+[Arguments] {}
+
+Arrow:
+My Test Object
+[Arguments] { '0': 'hello', '1': 'world' }
+</pre>
+:::
+
 ## Modules
 
 https://www.w3schools.com/nodejs/nodejs_modules.asp
