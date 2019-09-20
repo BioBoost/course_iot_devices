@@ -7,6 +7,9 @@ title: 01 - Crash Course Node.js
 
 ## About Node.js
 
+* Good video: [Node.js Tutorial For Absolute Beginners by Traversy Media](https://www.youtube.com/watch?v=U8XF6AFGqlc)
+* Playground for JS: [Playcode.io](https://playcode.io/)
+
 ### What is Node.js
 
 * Open source server environment
@@ -20,21 +23,32 @@ Node isn't a silver bullet, it's not always the best solution for every project.
 
 * WebApps are written in client/server model
 * Client requests file from server
-* Server gets file (waits) from filesystem and returns it, then closes connection
+* Server gets file from filesystem and returns it (needs to wait), then closes connection
 * Ready for new connection
 
 #### What about multiple clients
 
 * Threads
-  * Running multiple operations concurrently
-* Starting up new threads had a cost (overhead)
+  * Allows for running multiple operations concurrently
+  * Threads need memory
+  * Eventually maxes out and requires waiting
 
 ### Here came Node.js
 
 * Client requests file from server
 * Node.js requests the file from the file system but doesn't wait
 * Ready to handle the next request.
+  * Can handle tens of thousands of connections
 * When the file system has opened and read the file, the server is notified and it returns the content to the client.
+
+## Use cases
+
+* REST APIs
+* Backend Apps
+* Real-time services (chats, games, ...)
+* Blogs, CMS, Social Apps
+* Command line tools and Utilities
+* Mainly things that are not CPU-intensive
 
 ## Creating Apps
 
@@ -308,11 +322,6 @@ setTimeout(() => {
 }, 1000);
 ```
 
-## Promises
-
-https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-promise-27fc71e77261
-https://nodejs.dev/understanding-javascript-promises
-
 ## Emitting Events
 
 * Node.js has a built-in module, called "Events"
@@ -517,3 +526,40 @@ console.log("Ready?")
 // Messing with the Event Loop
 while(true){}
 ```
+
+## Packages
+
+Your source for libraries/packages: [https://www.npmjs.com/](https://www.npmjs.com/).
+
+### NPM
+
+* Node Package Manager
+* Install node modules/packages
+* Also manages dependencies
+* Installs in the `node_modules`dir
+* `npm install express` or `npm install --save express` to save as dependency in `package.json`
+* Install global using `npm install -g <packagename>`
+
+### Popular Packages
+
+* Express: Web development framework
+* Connect: Extensible HTTP server framework
+* Socket.io: Server side components for websockets
+* Mongo/Mongoose: Wrappers for interacting with MongoDB
+  * MongoDB is a document database, which means it stores data in JSON-like documents.
+* Redis: Redis client library
+  * Redis is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker.
+
+### Create your own
+
+* Add `Add decent README.md` with example
+* Setup a Github repo
+* Setup account on [npmjs.com](https://www.npmjs.com)
+* `npm init`
+* `npm login`
+* `npm publish`
+
+<!-- ## Promises -->
+
+<!-- https://medium.com/javascript-scene/master-the-javascript-interview-what-is-a-promise-27fc71e77261 -->
+<!-- https://nodejs.dev/understanding-javascript-promises -->
