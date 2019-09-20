@@ -220,10 +220,38 @@ setInterval(() => {
 
 ## Classes
 
-* No private methods
+* No private fields/methods
 * `constructor`
 * No multiple inheritance
 * Attributes: `this.`
+
+```js
+class Greeter {
+  constructor(greeting='Hello') {
+    this.greeting = greeting;
+  }
+
+  greet() {
+    return `${this.greeting}. I am Node.js`;
+  }
+}
+
+module.exports = Greeter;
+// module.exports.Greeter = Greeter
+// exports.Greeter = Greeter
+```
+
+* Creating instances
+
+```js
+const Greeter = require('./lib/greeter');
+
+let greeter = new Greeter();
+let dude = new Greeter('Dude!');
+
+console.log(greeter.greet());
+console.log(dude.greet());
+```
 
 ## Arrow functions
 
