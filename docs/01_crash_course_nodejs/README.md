@@ -533,7 +533,7 @@ Your source for libraries/packages: [https://www.npmjs.com/](https://www.npmjs.c
 
 ### NPM
 
-* Node Package Manager
+* Node Package Manager 
 * Install node modules/packages
 * Also manages dependencies
 * Installs in the `node_modules`dir
@@ -556,8 +556,16 @@ Your source for libraries/packages: [https://www.npmjs.com/](https://www.npmjs.c
 * Setup a Github repo
 * Setup account on [npmjs.com](https://www.npmjs.com)
 * `npm init`
-* `npm login`
-* `npm publish`
+* Publishing on npmjs
+  * `npm login`
+  * `npm publish`
+* Or using it from GitHub
+  * `npm install --save <github_url>`
+
+<!-- ## NPX -->
+
+<!-- https://github.com/vives-devbit/devbit-linter -->
+<!-- npx devbit-linter -->
 
 <!-- ## Promises -->
 
