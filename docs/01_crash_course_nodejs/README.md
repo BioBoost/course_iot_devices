@@ -8,6 +8,8 @@ title: 01 - Crash Course Node.js
 ## About Node.js
 
 * Good video: [Node.js Tutorial For Absolute Beginners by Traversy Media](https://www.youtube.com/watch?v=U8XF6AFGqlc)
+* Another Good Video: [What is Node.js Exactly? - a beginners introduction to Nodejs by 
+LearnCode.academy](https://www.youtube.com/watch?v=pU9Q6oiQNd0)
 * Playground for JS: [Playcode.io](https://playcode.io/)
 
 ### What is Node.js
