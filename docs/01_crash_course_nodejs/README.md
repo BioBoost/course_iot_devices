@@ -163,6 +163,41 @@ app.use((request,response) => {
 app.listen(PORT, () => console.log(`Example app listening on port ${PORT}!`))
 ```
 
+## Variable declaration
+
+* `var x = 13` or `let y = 23`
+* Both used for variable declaration in JS
+* Difference between them is that `var` is function scoped and `let` is block scoped.
+* You'll just want to use `let` but lots of code still uses `var` 
+
+```js
+console.log(x);
+var x = 5;
+console.log(x);
+```
+
+:::codeoutput
+<pre>
+undefined
+5
+</pre>
+```
+:::
+
+```js
+console.log(x);
+let x = 5;
+console.log(x);
+```
+
+:::codeoutput
+<pre>
+...
+ReferenceError: Cannot access 'x' before initialization
+...
+</pre>
+:::
+
 ## Interval and TimeOut
 
 * Timeout
