@@ -43,6 +43,8 @@ Node isn't a silver bullet, it's not always the best solution for every project.
   * Can handle tens of thousands of connections
 * When the file system has opened and read the file, the server is notified and it returns the content to the client.
 
+Nice video on async versus sync: [How Node.js Works | Mosh by Programming with Mosh](https://www.youtube.com/watch?v=jOupHNvDIq8)
+
 ## Use cases
 
 * REST APIs
