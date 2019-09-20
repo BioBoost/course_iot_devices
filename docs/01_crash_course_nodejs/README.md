@@ -658,9 +658,9 @@ Your source for libraries/packages: [https://www.npmjs.com/](https://www.npmjs.c
 
 * Add `Add decent README.md` with example
 * Setup a Github repo
-* Setup account on [npmjs.com](https://www.npmjs.com)
 * `npm init`
 * Publishing on npmjs
+  * Setup account on [npmjs.com](https://www.npmjs.com)
   * `npm login`
   * `npm publish`
 * Or using it from GitHub
