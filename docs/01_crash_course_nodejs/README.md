@@ -255,6 +255,43 @@ console.log(greeter.greet());
 console.log(dude.greet());
 ```
 
+## Default Argument Hash
+
+* Cleaner syntax for multiple default arguments
+
+```js
+class Greeter {
+  constructor({
+      greeting = 'Hello',
+      name = 'Node.js'
+    } = {}) {
+    
+      this.greeting = greeting;
+      this.name = name;
+  }
+
+  greet() {
+    return `${this.greeting}. I am ${this.name}`;
+  }
+}
+
+module.exports = Greeter;
+```
+
+* Usage
+
+```js
+const Greeter = require('./lib/greeter');
+
+let greeter = new Greeter();
+let dude = new Greeter({greeting: 'Dude!', name: 'Bono'});
+let esse = new Greeter({name: 'Esse'});
+
+console.log(greeter.greet());
+console.log(dude.greet());
+console.log(esse.greet());
+```
+
 ## Arrow functions
 
 * One of the most heralded features in modern JavaScript
