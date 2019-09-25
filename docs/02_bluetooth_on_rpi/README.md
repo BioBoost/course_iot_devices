@@ -53,6 +53,10 @@ Assigned Services (https://www.bluetooth.com/specifications/gatt/services/) on t
   * Characteristic reads, writes, notifications, indications
 * Same roles (client, server) as ATT
 
+The GATT defines procedures for a client to discover services and characteristics hosted on a server. Client then can read, write or subscribe to selected characteristics.
+
+Contrary to what might be intuitive, the GATT server is usually a Bluetooth peripheral device like a heartbeat monitor. The client on the other hand is a central device like a smartphone.
+
 ## Services and Characteristics
 
 * A service groups together related attributes
@@ -60,13 +64,20 @@ Assigned Services (https://www.bluetooth.com/specifications/gatt/services/) on t
 ![Service](./img/service.png)
 
 * Attributes
-  * Characteristics (which hold values)
-    * Ex.: the battery level %
+  * Characteristics
+    * Values: ex. the battery level %
+      * Maximum is 512 bytes
     * Contains other attributes such as
       * Properties (read, write, Notify, ...)
       * Descriptors (user description, presentation format, unit, ...)
   * Non-characteristic (help structure data within the service)
     * Examples ?
+
+![Hierarchy](./img/hierarchy_profile_service_characteristics.png)
+
+* Both services and characteristics have their own unique UUIDs.
+
+There are also some predefined services and characteristics that unify the way of exchanging common types of information. For example, a device may implement the Battery Service which has a mandatory Battery Level characteristic. This way every client can easily discover battery level reporting functionality in a device, regardless of its type and manufacturer.
 
 ![Battery Service](./img/battery_service.png)
 
@@ -75,6 +86,8 @@ Useful links:
 * [https://www.bluetooth.com/specifications/gatt/services/](https://www.bluetooth.com/specifications/gatt/services/)
 * [https://www.bluetooth.com/specifications/gatt/characteristics/](https://www.bluetooth.com/specifications/gatt/characteristics/)
 * [https://www.bluetooth.com/specifications/gatt/descriptors/](https://www.bluetooth.com/specifications/gatt/descriptors/)
+
+
 
 <!-- ## Profiles
 
