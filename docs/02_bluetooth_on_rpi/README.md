@@ -3,9 +3,90 @@ description: Configuring the Raspberry Pi as a Bluetooth peripheral
 title: 02 - Bluetooth on RPi
 ---
 
-# Chapter 02 - Bluetooth on RPi
+# Chapter 02 - Bluetooth LE on RPi
 
 <!-- TODO - Introduction in Bluetooth -->
+
+## Attribute Protocol (ATT)
+
+* Defines how a server exposes its data to a client
+* Also defines how data is structured within the server
+  * As attributes
+
+* Client: the device that reads and writes from the server and receives notifications (ex. smartphone)
+* Server: the device that exposes the data it controls and allows the client to retrieve it (ex. sensor)
+
+### Attribute
+
+| Handle | UUID | Value | Permissions |
+| --- | --- | --- | --- |
+| 16-bit | 16-bit (SIG) or 128-bit | xxx | xxx |
+
+* Handle: 16-bit unique identifier for each attribute on the server
+* UUID:
+  * 16-bit for SIG adopted attributes
+    * Replaced the 4th-8th octets (`XXXX`) in the SIG base UUID: `0000XXXX-0000-1000-8000-00805F9B34FB`
+    * `0x180F` for Battery Service becomes `0000180F-0000-1000-8000-00805F9B34FB`
+    * `0x2A00` for Device Name Characteristic becomes `00002A00-0000-1000-8000-00805F9B34FB`
+  * 128-bit for custom attributes
+    * No central registry so you can pick your own
+    * Should not collide with SIG IDs
+    * Use [https://www.uuidgenerator.net/](https://www.uuidgenerator.net/) to generate a UUID.
+* Value
+  * Holds the data
+  * Variable length
+  * Format based on the attribute type
+* Permissions
+  * Determine if it can be read or written to
+  * If notifications can be enabled
+  * Security levels
+
+<!-- All BLE Assigned Services / Characteristics / Descriptors / ... use the Bluetooth SIG Base UUID -->
+<!-- Assigned Characteristics (https://www.bluetooth.com/specifications/gatt/characteristics/). These all seem to start somewhere around `0x2A00`.
+Assigned Services (https://www.bluetooth.com/specifications/gatt/services/) on the other hand seem to start at `0x1800`. -->
+
+## Generic Attribute Profile (GATT)
+
+* Defines the format of services and their characteristics
+* Defines the procedures to interface with these attributes
+  * Service discovery
+  * Characteristic reads, writes, notifications, indications
+* Same roles (client, server) as ATT
+
+## Services and Characteristics
+
+* A service groups together related attributes
+
+![Service](./img/service.png)
+
+* Attributes
+  * Characteristics (which hold values)
+    * Ex.: the battery level %
+    * Contains other attributes such as
+      * Properties (read, write, Notify, ...)
+      * Descriptors (user description, presentation format, unit, ...)
+  * Non-characteristic (help structure data within the service)
+    * Examples ?
+
+![Battery Service](./img/battery_service.png)
+
+Useful links:
+
+* [https://www.bluetooth.com/specifications/gatt/services/](https://www.bluetooth.com/specifications/gatt/services/)
+* [https://www.bluetooth.com/specifications/gatt/characteristics/](https://www.bluetooth.com/specifications/gatt/characteristics/)
+* [https://www.bluetooth.com/specifications/gatt/descriptors/](https://www.bluetooth.com/specifications/gatt/descriptors/)
+
+<!-- ## Profiles
+
+Much broader in definition
+
+* Behavior
+* Services
+* Characteristics
+* Connections
+* Security -->
+
+<!-- ## Data Operations -->
 
 ## Bleno
 
@@ -183,3 +264,11 @@ You can install a
 * or use a general BLE app such as [nRF Connect for Mobile](https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp&hl=en)
 
 ![Beacon Scanner](./img/beacon_scanner.png)
+
+## Interesting Videos
+
+* [Ellisys Bluetooth Video 1: Intro to Bluetooth Low Energy](https://www.youtube.com/watch?v=eZGixQzBo7Y)
+* [Ellisys Bluetooth Video 2: Generic Access Profile](https://www.youtube.com/watch?v=8OfOwD8f2VI)
+* [Ellisys Bluetooth Video 3: Advertisements](https://www.youtube.com/watch?v=be9ct7OKI7s)
+* [Ellisys Bluetooth Video 4: Connections](https://www.youtube.com/watch?v=YmMDy8qYX_c)
+* [Ellisys Bluetooth Video 5: Generic Attribute Profile (GATT)](https://www.youtube.com/watch?v=eHqtiCMe4NA&list=PLYj4Cw17Aw7ypuXt7mDFWAyy6P661TD48&index=5)
