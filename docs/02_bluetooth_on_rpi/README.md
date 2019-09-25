@@ -59,11 +59,9 @@ Contrary to what might be intuitive, the GATT server is usually a Bluetooth peri
 
 ## Services and Characteristics
 
-* A service groups together related attributes
-
 ![Service](./img/service.png)
 
-* Attributes
+* Service groups related attributes
   * Characteristics
     * Values: ex. the battery level %
       * Maximum is 512 bytes
@@ -71,7 +69,8 @@ Contrary to what might be intuitive, the GATT server is usually a Bluetooth peri
       * Properties (read, write, Notify, ...)
       * Descriptors (user description, presentation format, unit, ...)
   * Non-characteristic (help structure data within the service)
-    * Examples ?
+    * Ex. include of other service
+    * For example battery in more general system health service
 
 ![Hierarchy](./img/hierarchy_profile_service_characteristics.png)
 
