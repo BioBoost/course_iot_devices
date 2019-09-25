@@ -87,7 +87,7 @@ Useful links:
 * [https://www.bluetooth.com/specifications/gatt/characteristics/](https://www.bluetooth.com/specifications/gatt/characteristics/)
 * [https://www.bluetooth.com/specifications/gatt/descriptors/](https://www.bluetooth.com/specifications/gatt/descriptors/)
 
-
+Chrome has a nice plugin to display XML files: [XV-XML Viewer](https://chrome.google.com/webstore/detail/xv-%E2%80%94-xml-viewer/eeocglpgjdpaefaedpblffpeebgmgddk?hl=us)
 
 <!-- ## Profiles
 
@@ -100,6 +100,14 @@ Much broader in definition
 * Security -->
 
 <!-- ## Data Operations -->
+
+## Interesting Videos
+
+* [Ellisys Bluetooth Video 1: Intro to Bluetooth Low Energy](https://www.youtube.com/watch?v=eZGixQzBo7Y)
+* [Ellisys Bluetooth Video 2: Generic Access Profile](https://www.youtube.com/watch?v=8OfOwD8f2VI)
+* [Ellisys Bluetooth Video 3: Advertisements](https://www.youtube.com/watch?v=be9ct7OKI7s)
+* [Ellisys Bluetooth Video 4: Connections](https://www.youtube.com/watch?v=YmMDy8qYX_c)
+* [Ellisys Bluetooth Video 5: Generic Attribute Profile (GATT)](https://www.youtube.com/watch?v=eHqtiCMe4NA&list=PLYj4Cw17Aw7ypuXt7mDFWAyy6P661TD48&index=5)
 
 ## Bleno
 
@@ -278,10 +286,124 @@ You can install a
 
 ![Beacon Scanner](./img/beacon_scanner.png)
 
-## Interesting Videos
+## Battery Service of a Railgun
 
-* [Ellisys Bluetooth Video 1: Intro to Bluetooth Low Energy](https://www.youtube.com/watch?v=eZGixQzBo7Y)
-* [Ellisys Bluetooth Video 2: Generic Access Profile](https://www.youtube.com/watch?v=8OfOwD8f2VI)
-* [Ellisys Bluetooth Video 3: Advertisements](https://www.youtube.com/watch?v=be9ct7OKI7s)
-* [Ellisys Bluetooth Video 4: Connections](https://www.youtube.com/watch?v=YmMDy8qYX_c)
-* [Ellisys Bluetooth Video 5: Generic Attribute Profile (GATT)](https://www.youtube.com/watch?v=eHqtiCMe4NA&list=PLYj4Cw17Aw7ypuXt7mDFWAyy6P661TD48&index=5)
+```js
+const bleno = require("@abandonware/bleno");
+
+// Choose a concise name for your device
+const PERIPHERAL_NAME = "railgun";
+
+// UUID of a Battery Service following SIG
+// https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Services/org.bluetooth.service.battery_service.xml
+const BATTERY_SERVICE_UUID = "180F";
+
+// UUID of a Battery Level following SIG
+// https://www.bluetooth.com/wp-content/uploads/Sitecore-Media-Library/Gatt/Xml/Characteristics/org.bluetooth.characteristic.battery_level.xml
+const BATTERY_LEVEL_CHARACTERISTIC_UUID = "2A19";
+
+class RailGun {
+  constructor() {
+    this.batteryLevel = 100;
+
+    setInterval(() => {
+      this.batteryLevel = Math.max(0, this.batteryLevel-1);
+    }, 5000);
+  }
+
+  fire() {
+    if (this.batteryLevel >= 10) {
+      this.batteryLevel = Math.max(0, this.batteryLevel-10);
+      console.log(`Cannon goes boom (${this.batteryLevel}% power left)`);
+    } else {
+      console.log(`Cannon goes pffff - sorry out of power (${this.batteryLevel}% power left)`);
+    }
+  }
+
+  battery_level() {
+    return this.batteryLevel;
+  }
+}
+
+let hugeCannon = new RailGun();
+
+setInterval(() => {
+  hugeCannon.fire();
+}, 8000);
+
+class BatteryLevelCharacteristic extends bleno.Characteristic {
+  constructor(railgun) {
+    super({
+      uuid: BATTERY_LEVEL_CHARACTERISTIC_UUID,
+      properties: ["read"],
+      value: null,
+      descriptors: [
+        new bleno.Descriptor({
+          uuid: "2901",
+          value: "Battery Level"
+        })
+      ]
+    });
+
+    this.railgun = railgun;
+  }
+
+  onReadRequest(offset, callback) {
+    try {
+      const level = this.railgun.battery_level();
+      console.log(`Returning battery level of: ${level}%`);
+
+      let data = Buffer.alloc(1);   // Single byte
+      data.writeUInt8(level, 0);
+      callback(this.RESULT_SUCCESS, data);
+    } catch (err) {
+      console.error(err);
+      callback(this.RESULT_UNLIKELY_ERROR);
+    }
+  }
+}
+
+console.log("Starting bleno ...");
+
+bleno.on("stateChange", state => {
+  if (state === "poweredOn") {
+    bleno.startAdvertising(PERIPHERAL_NAME, [BATTERY_SERVICE_UUID], err => {
+      if (err) console.log(err);
+    });
+  } else {
+    console.log("Stopping ...");
+    bleno.stopAdvertising();
+  }
+});
+
+bleno.on("advertisingStart", err => {
+  console.log("Configuring services ...");
+  
+  if(err) {
+      console.error(err);
+      return;
+  }
+
+  let service = new bleno.PrimaryService({
+      uuid: BATTERY_SERVICE_UUID,
+      characteristics: [
+        new BatteryLevelCharacteristic(hugeCannon)
+      ]
+  });
+
+  bleno.setServices([service], err => {
+    if(err) console.log(err);
+    else console.log("Services configured");
+  });
+});
+
+// Some diagnostics
+bleno.on("stateChange", state => console.log(`Bleno: Adapter changed state to ${state}`));
+bleno.on("advertisingStart", err => console.log("Bleno: advertisingStart"));
+bleno.on("advertisingStartError", err => console.log("Bleno: advertisingStartError"));
+bleno.on("advertisingStop", err => console.log("Bleno: advertisingStop"));
+bleno.on("servicesSet", err => console.log("Bleno: servicesSet"));
+bleno.on("servicesSetError", err => console.log("Bleno: servicesSetError"));
+bleno.on("accept", clientAddress => console.log(`Bleno: accept ${clientAddress}`));
+bleno.on("disconnect", clientAddress => console.log(`Bleno: disconnect ${clientAddress}`));
+```
