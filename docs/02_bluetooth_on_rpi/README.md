@@ -1,13 +1,215 @@
 ---
 description: Configuring the Raspberry Pi as a Bluetooth peripheral
-title: 02 - Bluetooth on RPi
+title: 02 - BLE on RPi
 ---
 
-# Chapter 02 - Bluetooth LE on RPi
+# Chapter 02 - Bluetooth Low Energy on RPi
 
-<!-- TODO - Introduction in Bluetooth -->
+<!-- Some useful links: -->
+<!-- https://www.skyrise.tech/blog/tech/bluetooth-raspberry-pi-bleno-part-1-ibeacon/ -->
+<!-- https://www.nativescript.org/blog/controlling-robots-with-nativescript-Bluetooth -->
+<!-- https://learn.sparkfun.com/tutorials/bluetooth-basics/all -->
 
-## Attribute Protocol (ATT)
+## About Bluetooth
+
+* Wireless communication standard
+* Standardized protocol
+  * Use to be IEEE Standard 802.15.1 (Bluetooth 1.x)
+  * Now SIG (Bluetooth Special Interest Group), 35’000+ companies
+* 2.4GHz ISM (Industrial, Scientific and Medical band)
+  * Same as ZigBee and WiFi
+* Short range
+* Low power
+* Low cost
+
+### FHSS Technology
+
+* Utilizes frequency-hopping spread spectrum (FHSS) technology to avoid interference problems
+  * 79 channels
+  * 1600 hops/second
+  * Adaptive system
+    * Change hopping pattern based on interference
+
+![](./img/freq_band.png)
+
+### Some Versions of Bluetooth
+
+* **Bluetooth 1.2**
+  * Most stable versions of v1.x
+  * Data rates up to 1Mbps (0.7Mbps in practice)
+  * 10m maximum range
+
+* **Bluetooth 2.0 + EDR**
+  * EDR = Enhanced Data Rates
+    * 3Mbps (2.1Mbps in practice)
+
+* **Bluetooth 2.1 + EDR**
+  * SSP = Secure Simple Pairing
+    * Improves pairing experience
+  * v2.1 modules are still very common
+
+* **Bluetooth 3.0 + HS**
+  * High Speed (not mandatory)
+  * Max speed of 24Mbps (actually over Wifi)
+    * Bluetooth only used to establish and manage connection
+  * Introduced better power control and streaming
+
+* **Bluetooth 4.0**
+  * Also called Bluetooth Smart
+  * Includes Classic Bluetooth, Bluetooth high speed and Bluetooth Low Energy (BLE) protocols.
+  * Bluetooth Low Energy (BLE)
+    * Previously known as Wibree,
+    * Subset of Bluetooth v4.0 with an entirely new protocol stack
+    * Aimed at very low power applications
+    * Up to 50m and max 0.27Mbps
+    * Not compatible with Bluetooth Classic
+
+* **Bluetooth 5**
+  * New features are mainly focused on Internet of Things
+  * BLE
+    * Double speed (2Mbps burst) at expense of range
+    * 4x range at expense of data rate
+    * Connectionless services
+
+### Piconets
+
+* Single master (central) network
+* Bluetooth classic allows up to 7 slave devices (peripheral)
+* Slaves can only talk to master, not to each other
+* Master coordinates communication
+
+![Piconet](./img/piconet.png)
+
+### Bluetooth Address
+
+* Unique identifier for device
+
+![](./img/bluetooth_address.png)
+
+* 48 bits
+  * NAP - Non-significant Address Part (2 bytes). Contains first 16 bits of the OUI. The NAP value is used in Frequency Hopping Synchronization frames.
+  * UAP - Upper Address Part (1 byte). Contains remaining 8 bits of the OUI. The UAP value is used for seeding in various Bluetooth specification algorithms.
+  * LAP - Lower Address Part (3 bytes). This portion of Bluetooth Address is allocated by the vendor of device. The LAP value uniquely identifies a Bluetooth device as part of the Access Code in every transmitted frame.
+
+* OUI prefixes are assigned by the Institute of Electrical and Electronics Engineers (IEEE).
+* The LAP and the UAP make the significant address part (SAP) of the Bluetooth Address.
+
+### Bluetooth Profiles
+
+* Bluetooth spec defines how the technology works
+* Bluetooth profiles defines how it is used
+* The profile(s) a Bluetooth device supports determine(s) what application it is geared towards
+* Examples
+  * A hands-free Bluetooth headset would use the headset profile (HSP)
+  * A Nintendo Wii controller would implement the human interface device (HID) profile.
+  * Basic serial communication can be achieved using the Serial Port Profile (SPP)
+* For two Bluetooth devices to be compatible, they must support the same profiles
+  * Help to ensure the interoperability between Bluetooth devices.
+
+<!-- Just because Bluetooth devices can connect to each other does not mean that they can perform functions or Applications. -->
+
+* Advanced Audio Distribution Profile (A2DP)
+* Attribute Profile (ATT)
+* Audio/Video Remote Control Profile (AVRCP)
+* Basic Imaging Profile (BIP)
+* Basic Printing Profile (BPP)
+* Common ISDN Access Profile (CIP)
+* Cordless Telephony Profile (CTP)
+* Device ID Profile (DIP)
+* Dial-up Networking Profile (DUN)
+* Fax Profile (FAX)
+* File Transfer Profile (FTP)
+* Generic Audio/Video Distribution Profile (GAVDP)
+* Generic Access Profile (GAP)
+* Generic Attribute Profile (GATT)
+* Generic Object Exchange Profile (GOEP)
+* Hard Copy Cable Replacement Profile (HCRP)
+* Health Device Profile (HDP)
+* Hands-Free Profile (HFP)
+* Human Interface Device Profile (HID)
+* Headset Profile (HSP)
+* Intercom Profile (ICP)
+* LAN Access Profile (LAP)
+* Mesh Profile (MESH)
+* Message Access Profile (MAP)
+* OBject EXchange (OBEX)
+* Object Push Profile (OPP)
+* Personal Area Networking Profile (PAN)
+* Phone Book Access Profile (PBAP, PBA)
+* Proximity Profile (PXP)
+* Serial Port Profile (SPP)
+* Service Discovery Application Profile (SDAP)
+* SIM Access Profile (SAP, SIM, rSAP)
+* Synchronization Profile (SYNCH)
+* Synchronisation Mark-up Language Profile (SyncML)
+* Video Distribution Profile (VDP)
+* Wireless Application Protocol Bearer (WAPB)
+
+## Bluetooth Low Energy
+
+* Light-weight subset of classic Bluetooth
+* Introduced as part of the Bluetooth 4.0 core specification.
+* While there is some overlap with classic Bluetooth, BLE actually has a completely different lineage and was started by Nokia as an in-house project called *Wibree* before being adopted by the Bluetooth SIG.
+
+<!-- A BLE peripheral can only be connected to one central device (a mobile phone, etc.) at a time! As soon as a peripheral connects to a central device, it will stop advertising itself and other devices will no longer be able to see it or connect to it until the existing connection is broken. -->
+
+### BLE Platform Support
+
+* iOS5+ (iOS7+ preferred)
+* Android 4.3+ (numerous bug fixes in 4.4+)
+* Apple OS X 10.6+
+* Windows 8 (XP, Vista and 7 only support Bluetooth 2.1)
+* GNU/Linux Vanilla BlueZ 4.93+
+
+## Generic Access Profile (GAP)
+
+Provides the basis for all other profiles. GAP defines how two Bluetooth units discover and establish a connection with each other.
+
+* Controls connections and advertising in Bluetooth.
+* GAP is what makes your device visible to the outside world, and determines how two devices can (or can't) interact with each other.
+* Defines roles for devices
+  * **Peripheral**: devices are small, low power, resource constrained devices that can connect to a much more powerful central device.
+    * Peripheral devices are things like a heart rate monitor, a BLE enabled proximity tag, etc.
+  * **Central**: devices are usually the mobile phone or tablet that you connect to with far more processing power and memory.
+
+* A peripheral will set a specific advertising interval, and every time this interval passes, it will retransmit it's main advertising packet.
+* Most peripherals advertise themselves so that a connection can be established and GATT services and characteristics can be used (which allows for much more data to be exchanged and in both directions)
+
+### Broadcast Network Topology
+
+* The main use case here is where you want a peripheral to send data to more than one device at a time.
+* This is only possible using the advertising packet since data sent and received in connected mode can only be seen by those two connected devices.
+* By including a small amount of custom data in the 31 byte advertising or scan response payloads, you can use a low cost Bluetooth Low Energy peripheral to sent data one-way to any devices in listening range
+* This is the approach use by Apple's iBeacon
+
+![Broadcast BLE](./img/broadcast_ble.png)
+
+Once you establish a connection between your peripheral and a central device, the advertising process will generally stop and you will typically no longer be able to send advertising packets out anymore
+
+## Generic Attribute Profile (GATT)
+
+Provides profile discovery and description services for Bluetooth Low Energy protocol. It defines how ATT attributes are grouped together into sets to form services.
+
+* Defines the way that two Bluetooth Low Energy devices transfer data back and forth
+  * Using concepts called Services and Characteristics.
+* Makes use of a generic data protocol called the Attribute Protocol (ATT)
+  * Stores Services, Characteristics and related data in a simple lookup table using 16-bit IDs for each entry in the table.
+* GATT comes into play once a dedicated connection is established between two devices
+  * Meaning that you have already gone through the advertising process governed by GAP.
+
+* Defines the format of services and their characteristics
+* Defines the procedures to interface with these attributes
+  * Service discovery
+  * Characteristic reads, writes, notifications, indications
+* Same roles (client, server) as ATT
+
+The GATT defines procedures for a client to discover services and characteristics hosted on a server. Client then can read, write or subscribe to selected characteristics.
+
+Contrary to what might be intuitive, the GATT server is usually a Bluetooth peripheral device like a heartbeat monitor. The client on the other hand is a central device like a smartphone.
+
+* Connections are exclusive. What is meant by that is that a BLE peripheral can only be connected to one central device (a mobile phone, etc.) at a time! As soon as a peripheral connects to a central device, it will stop advertising itself and other devices will no longer be able to see it or connect to it until the existing connection is broken.
+
+### Attribute Protocol (ATT)
 
 * Defines how a server exposes its data to a client
 * Also defines how data is structured within the server
@@ -16,7 +218,70 @@ title: 02 - Bluetooth on RPi
 * Client: the device that reads and writes from the server and receives notifications (ex. smartphone)
 * Server: the device that exposes the data it controls and allows the client to retrieve it (ex. sensor)
 
-### Attribute
+### Profiles
+
+![](./img/gatt_structure.png)
+
+A Profile doesn't actually exist on the BLE peripheral itself, it's simple a pre-defined collection of Services that has been compiled by either the Bluetooth SIG or by the peripheral designers. The Heart Rate Profile, for example, combines the Heart Rate Service and the Device Information Service.
+
+### Services
+
+![Service](./img/service.png)
+
+* Services are used to break data up into logic entities, and contain specific chunks of data called characteristics.
+* A service can have one or more characteristics
+* Each service distinguishes itself from other services by means of a unique numeric ID called a UUID
+  * Can be either 16-bit (for officially adopted BLE Services)
+  * 128-bit (for custom services).
+
+Example:
+
+* Heart Rate Service
+  * 16-bit UUID of `0x180D`
+  * Contains up to 3 characteristic
+    * Heart Rate Measurement (mandatory)
+    * Body Sensor Location (optional)
+    * Heart Rate Control Point (optional)
+
+See [https://www.bluetooth.com/specifications/gatt/services/](https://www.bluetooth.com/specifications/gatt/services/).
+
+![Battery Service](./img/battery_service.png)
+
+### Characteristics
+
+* Encapsulates a single data point
+  * May contain an array of related data, such as X/Y/Z values from a 3-axis accelerometer
+
+* Each Characteristic distinguishes itself via a
+  * pre-defined 16-bit (ensures interoperability across and BLE-enabled HW/SW)
+  * custom 128-bit UUID
+
+Example:
+
+* Heart Rate Measurement characteristic is mandatory for the Heart Rate Service
+  * Uses a UUID of `0x2A37`.
+  * It starts with a single 8-bit value describing the HRM data format (whether the data is UINT8 or UINT16, etc.), and then goes on to include the heart rate measurement data that matches this config byte.
+
+* Characteristics
+  * Values: ex. the battery level %
+    * Maximum is 512 bytes
+  * Contains other information such as
+    * Properties (read, write, Notify, ...)
+    * Descriptors (user description, presentation format, unit, ...)
+      * A Descriptor is an attribute that describes a Characteristic Value.
+
+#### Attributes
+
+Services, characteristics and descriptors ... are actually attributes
+
+* The BLE standard provides the ATT protocol that defines the concept of attributes.
+* All attributes are defined inside a table and they have an handle, a type (with an UUID), a value (and permissions).
+* On top of ATT protocol in the BLE stack you have GATT and GAP.
+* The GATT protocol defines services, characteristics and descriptors and each of them is an attribute.
+
+For example, a characteristic is an attribute with an handle, a type (an UUID that tells us that the attribute is a characteristic) and a value (the characteristic properties with handle to the attribute value and so on). Inside the characteristic you have an attribute that is the value of the characteristic and one or more descriptors that are attributes themselves.
+
+You can see the attribute concept as the abstract type you can define concrete types like service, characteristic and descriptors.
 
 | Handle | UUID | Value | Permissions |
 | --- | --- | --- | --- |
@@ -45,40 +310,9 @@ title: 02 - Bluetooth on RPi
 <!-- Assigned Characteristics (https://www.bluetooth.com/specifications/gatt/characteristics/). These all seem to start somewhere around `0x2A00`.
 Assigned Services (https://www.bluetooth.com/specifications/gatt/services/) on the other hand seem to start at `0x1800`. -->
 
-## Generic Attribute Profile (GATT)
-
-* Defines the format of services and their characteristics
-* Defines the procedures to interface with these attributes
-  * Service discovery
-  * Characteristic reads, writes, notifications, indications
-* Same roles (client, server) as ATT
-
-The GATT defines procedures for a client to discover services and characteristics hosted on a server. Client then can read, write or subscribe to selected characteristics.
-
-Contrary to what might be intuitive, the GATT server is usually a Bluetooth peripheral device like a heartbeat monitor. The client on the other hand is a central device like a smartphone.
-
-## Services and Characteristics
-
-![Service](./img/service.png)
-
-* Service groups related attributes
-  * Characteristics
-    * Values: ex. the battery level %
-      * Maximum is 512 bytes
-    * Contains other attributes such as
-      * Properties (read, write, Notify, ...)
-      * Descriptors (user description, presentation format, unit, ...)
-  * Non-characteristic (help structure data within the service)
-    * Ex. include of other service
-    * For example battery in more general system health service
-
 ![Hierarchy](./img/hierarchy_profile_service_characteristics.png)
 
 * Both services and characteristics have their own unique UUIDs.
-
-There are also some predefined services and characteristics that unify the way of exchanging common types of information. For example, a device may implement the Battery Service which has a mandatory Battery Level characteristic. This way every client can easily discover battery level reporting functionality in a device, regardless of its type and manufacturer.
-
-![Battery Service](./img/battery_service.png)
 
 Useful links:
 
@@ -88,29 +322,18 @@ Useful links:
 
 Chrome has a nice plugin to display XML files: [XV-XML Viewer](https://chrome.google.com/webstore/detail/xv-%E2%80%94-xml-viewer/eeocglpgjdpaefaedpblffpeebgmgddk?hl=us)
 
-## Notifications
+### Notifications
 
 Sometimes it is useful to push information to a connected client instead of waiting for it to pull it. An example could be a heartbeat monitor that pushes information about the reading after each detected change. Fortunately, GATT provides us with a way to implement such scenario. A characteristic may support notification mode, so that a client can subscribe to it.
 
-<!-- ## Profiles
-
-Much broader in definition
-
-* Behavior
-* Services
-* Characteristics
-* Connections
-* Security -->
-
-<!-- ## Data Operations -->
-
-## Interesting Videos
+## Interesting Videos on BLE
 
 * [Ellisys Bluetooth Video 1: Intro to Bluetooth Low Energy](https://www.youtube.com/watch?v=eZGixQzBo7Y)
 * [Ellisys Bluetooth Video 2: Generic Access Profile](https://www.youtube.com/watch?v=8OfOwD8f2VI)
 * [Ellisys Bluetooth Video 3: Advertisements](https://www.youtube.com/watch?v=be9ct7OKI7s)
 * [Ellisys Bluetooth Video 4: Connections](https://www.youtube.com/watch?v=YmMDy8qYX_c)
 * [Ellisys Bluetooth Video 5: Generic Attribute Profile (GATT)](https://www.youtube.com/watch?v=eHqtiCMe4NA&list=PLYj4Cw17Aw7ypuXt7mDFWAyy6P661TD48&index=5)
+* [Nordic Semiconductor - Introduction to Bluetooth Smart](https://www.youtube.com/watch?v=BZwOrQ6zkzE)
 
 ## Bleno
 
@@ -142,6 +365,17 @@ Much broader in definition
 ## Setup bleno on RPi 3
 
 * Used Raspbian Buster Lite 2019-07-10 – kernel v4.19
+
+
+<!-- ### Listing Bluetooth adapters -->
+
+<!-- `hciconfig` -->
+
+<!-- The bluetooth system service needs to be disabled for bleno to work, otherwise some operations will just fail silently. This is quite easy to miss.
+
+sudo service bluetooth stop
+sudo hciconfig hci0 up # reactivate hci0 or another hciX you want to use -->
+
 
 ### Update
 
