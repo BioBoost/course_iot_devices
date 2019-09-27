@@ -67,6 +67,8 @@ title: 02 - BLE on RPi
   * Bluetooth Smart Ready: dual mode, BR (BasicRate)/EDR + BLE-radio
     * Typically smartphone or tablet
 
+![](./img/bt_stacks.png)
+
 * **Bluetooth 5**
   * New features are mainly focused on Internet of Things
   * BLE
@@ -255,9 +257,9 @@ See [https://www.bluetooth.com/specifications/gatt/services/](https://www.blueto
 * Encapsulates a single data point
   * May contain an array of related data, such as X/Y/Z values from a 3-axis accelerometer
 
-* Each Characteristic distinguishes itself via a
-  * pre-defined 16-bit (ensures interoperability across and BLE-enabled HW/SW)
-  * custom 128-bit UUID
+* Each Characteristic distinguishes itself via either
+  * a pre-defined 16-bit (ensures interoperability across and BLE-enabled HW/SW)
+  * or a custom 128-bit UUID
 
 Example:
 
