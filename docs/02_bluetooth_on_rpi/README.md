@@ -397,7 +397,7 @@ Need to stop the Bluetooth daemon
 
 ```shell
 sudo systemctl stop bluetooth
-sudo systemctl disable Bluetooth
+sudo systemctl disable bluetooth
 ```
 
 Install dependencies
