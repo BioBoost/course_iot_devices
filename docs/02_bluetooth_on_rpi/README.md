@@ -55,14 +55,17 @@ title: 02 - BLE on RPi
   * Introduced better power control and streaming
 
 * **Bluetooth 4.0**
-  * Also called Bluetooth Smart
   * Includes Classic Bluetooth, Bluetooth high speed and Bluetooth Low Energy (BLE) protocols.
   * Bluetooth Low Energy (BLE)
-    * Previously known as Wibree,
+    * Previously known as Wibree (by Nokia)
+    * Also called Bluetooth Smart
     * Subset of Bluetooth v4.0 with an entirely new protocol stack
     * Aimed at very low power applications
     * Up to 50m and max 0.27Mbps
     * Not compatible with Bluetooth Classic
+  * Bluetooth Smart: single mode, BLE-radio only
+  * Bluetooth Smart Ready: dual mode, BR (BasicRate)/EDR + BLE-radio
+    * Typically smartphone or tablet
 
 * **Bluetooth 5**
   * New features are mainly focused on Internet of Things
@@ -271,6 +274,8 @@ Example:
       * A Descriptor is an attribute that describes a Characteristic Value.
 
 #### Attributes
+
+An attribute is labeled, addressable data.
 
 Services, characteristics and descriptors ... are actually attributes
 
