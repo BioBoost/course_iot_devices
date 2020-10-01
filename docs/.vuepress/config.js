@@ -7,6 +7,8 @@ module.exports = {
     ],
     sidebar: [
       '/',
+      '/01-hello-world/',
+      '/mbed-class-reference/',
       // '/01_crash_course_nodejs/',
       // '/02_bluetooth_on_rpi/',
     ],
