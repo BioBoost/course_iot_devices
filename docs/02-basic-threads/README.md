@@ -21,8 +21,17 @@ Last: threads are different from processes. A thread is a context of execution, 
 The `Thread` class of Mbed OS allows defining, creating and controlling parallel tasks.
 
 ::: tip Main
-The main function is a special thread function that is started at system initialization.
+The main function is a special thread function that is started at system initialization. It is the first thread the RTOS schedules.
 :::
+
+A Thread can be in the following states:
+
+* **Running**: The currently running thread. Only one thread at a time can be in this state.
+* **Ready**: Threads that are ready to run. Once the running thread has terminated or is waiting, the ready thread with the highest priority becomes the running thread.
+* **Waiting**: Threads that are waiting for an event to occur.
+* **Inactive**: Threads that are not created or terminated. These threads typically consume no system resources.
+
+![Thread Status](./img/thread_status.png)
 
 All the internal thread data structures are part of the C++ class, but by default, the thread stack is allocated on the heap. Memory is allocated at the run time during the call to start method. If you don't want to use dynamic memory, you can provide your own static memory using the constructor parameters.
 
@@ -157,3 +166,9 @@ int main()
     }
 }
 ```
+
+## RTOS Ticker
+
+Platforms using RTOS, including Mbed OS, need a mechanism for counting the time and scheduling tasks. A timer that generates periodic interrupts and is called system tick timer usually does this. Under Mbed OS, we call this mechanism the RTOS ticker.
+
+SysTick is a standard timer available on most Cortex-M cores. Its main purpose is to raise an interrupt with set frequency (usually 1ms). In addition, many Mbed OS platforms implement timers as part of peripherals. Mbed OS supports using SysTick or the peripheral timers as RTOS ticker.
