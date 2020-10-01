@@ -9,6 +9,7 @@ module.exports = {
       '/',
       '/01-hello-world/',
       '/02-basic-threads/',
+      '/03-serial-communication/',
       '/mbed-class-reference/',
       // '/01_crash_course_nodejs/',
       // '/02_bluetooth_on_rpi/',
