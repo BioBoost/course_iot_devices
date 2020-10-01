@@ -7,9 +7,21 @@ module.exports = {
     ],
     sidebar: [
       '/',
+      '/00-mbed-cli/',
       '/01-hello-world/',
-      '/02-basic-threads/',
-      '/03-serial-communication/',
+      {
+        title: 'Basic Threads',   // required
+        path: '/02-basic-threads/',      // optional, which should be a absolute path.
+        collapsable: false, // optional, defaults to true
+        sidebarDepth: 1,    // optional, defaults to 1
+        children: [
+          '/02-basic-threads/',
+          '/02-basic-threads/challenges/status-led/',
+        ]
+      },
+      '/03-interrupts/',
+      '/04-serial-communication/',
+      '/05-uart/',
       '/mbed-class-reference/',
       // '/01_crash_course_nodejs/',
       // '/02_bluetooth_on_rpi/',

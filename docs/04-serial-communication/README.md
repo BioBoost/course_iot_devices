@@ -25,3 +25,5 @@ Remark: in digital communication 1 symbol is represented by 1 bit so `1 bit/s` =
 ## Duplex Mode
 
 ![](./img/duplex-mode.png)
+
+<!-- Also see https://onebyzeroelectronics.blogspot.com/2016/03/difference-between-usart-uart-rs232-usb.html -->

@@ -1,9 +1,7 @@
 # IoT Devices
 
-Install Mbed Studio: [https://os.mbed.com/studio/](https://os.mbed.com/studio/)
-
-::: warning Install on C-drive
-Make sure to install Mbed Studio on the C-drive. Students have reported problems when it is installed on another driver. Best to keep the default installation location.
+::: error Do not Install Mbed Studio
+While the IDE looks all nice and cosy, its been nothing but trouble so far. For the moment we stick to the good old CLI.
 :::
 
 ## License
