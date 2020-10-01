@@ -7,8 +7,8 @@ module.exports = {
     ],
     sidebar: [
       '/',
-      '/01_crash_course_nodejs/',
-      '/02_bluetooth_on_rpi/',
+      // '/01_crash_course_nodejs/',
+      // '/02_bluetooth_on_rpi/',
     ],
     sidebarDepth: 1,
     repo: 'BioBoost/course_programming_from_base_to_ace',
