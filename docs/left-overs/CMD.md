@@ -62,3 +62,5 @@ int main()
 }
 
 ```
+
+Now consider this example to DIM a led running on PWM
