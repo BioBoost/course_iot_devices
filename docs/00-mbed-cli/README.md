@@ -5,7 +5,7 @@ Install Mbed CLI, which can be found here: [https://os.mbed.com/docs/mbed-os/v6.
 Creating a new project:
 
 ```bash
-mbed create hello-blinky
+mbed new hello-blinky
 ```
 
 Set the target manually or select detect
