@@ -2,27 +2,21 @@
 
 For this course you will need to install the latest mbed CLI.
 
-<!-- Instructions for the different installation procedures can be found at [https://os.mbed.com/docs/mbed-os/v6.3/build-tools/install-and-set-up.html](https://os.mbed.com/docs/mbed-os/v6.3/build-tools/install-and-set-up.html) -->
-
 ## For Windows
 
-::: warning
-Don't use the Windows Installer anymore. It is outdated. Follow the `Manual installation` instructions.
-:::
+Download he Windows Installer which can be found here [https://os.mbed.com/docs/mbed-os/v6.3/build-tools/install-and-set-up.html](https://os.mbed.com/docs/mbed-os/v6.3/build-tools/install-and-set-up.html)
 
-First you will need to install Python `3.7.x`. It can be found at [https://www.python.org/downloads/](https://www.python.org/downloads/).
+Unselect `git-scm` before continuing with the installation.
 
-Next install Mercurial. It can be found at [https://www.mercurial-scm.org/](https://www.mercurial-scm.org/).
-
-Also make sure you have a recent version of GIT installed.
-
-Now install the mbed cli using pip inside an elevated Powershell (`Run as Administrator`):
+Next update the mbed-cli version using (new Powershell terminal):
 
 ```bash
-pip3 install mbed-cli
+pip install -U mbed-cli --user
 ```
 
-Next install the **GCC Arm Embedded Compiler** which can be found at [https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads).
+Now install the latest **GCC Arm Embedded Compiler** which can be found at [https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads).
+
+Make sure to select `Add to PATH` at the end of the installation procedure.
 
 Now restart your machine.
 
@@ -30,8 +24,12 @@ If everything went smoothly, the following command in Powershell should return s
 
 ```bash
 mbed --version
-1.10.4
+1.8.3
 ```
+
+::: warning
+If the compilation process fails because the compiler version mismatches (6 vs 9) than you have not selected to add GCC Arm Embedded Compiler to you PATH. Either re-install the compiler or add the directory `C:\Program Files(x86)\GNU Arm Embedded Toolchain\9 2020-q2-update\bin` to your PATH manually. Also make sure that the `C:\Program Files(x86)\GNU Tools Arm Embedded\6 2017-q2-update\bin` is not present.
+:::
 
 ## For Linux
 
@@ -62,6 +60,25 @@ Select your toolchain (most likely `GCC_ARM`);
 
 ```bash
 mbed toolchain GCC_ARM
+```
+
+Make sure to create a `src/main.cpp` file with the hello blinky code in it:
+
+```cpp
+#include "mbed.h"
+
+DigitalOut led(LED1);
+
+static BufferedSerial pc(USBTX, USBRX, 115200);
+
+int main() {
+  printf("Starting blinky ...\n");
+
+  while(true) {
+    ThisThread::sleep_for(chrono::milliseconds(500));
+    led = !led;
+  }
+}
 ```
 
 Compile and flash
