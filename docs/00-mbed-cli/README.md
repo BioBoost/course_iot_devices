@@ -102,3 +102,17 @@ mbed sterm --baudrate 115200
 ```
 
 More info at [https://os.mbed.com/docs/mbed-os/v6.3/build-tools/compile.html](https://os.mbed.com/docs/mbed-os/v6.3/build-tools/compile.html).
+
+## Mbed OS Update
+
+To update `mbed-os` make sure to select a stable release version.
+
+Find the releases at [https://github.com/ARMmbed/mbed-os/releases](https://github.com/ARMmbed/mbed-os/releases).
+
+Next traverse to the `mbed-os` direct (really important) and execute a specific update:
+
+```bash
+mbed update mbed-os-6.2.0
+```
+
+Executing a `git log` inside `mbed-os` will tell you the exact release.
