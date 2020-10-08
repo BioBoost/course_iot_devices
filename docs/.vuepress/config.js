@@ -21,7 +21,16 @@ module.exports = {
       },
       '/03-interrupts/',
       '/04-serial-communication/',
-      '/05-uart/',
+      {
+        title: 'UART',   // required
+        path: '/05-uart/',      // optional, which should be a absolute path.
+        collapsable: false, // optional, defaults to true
+        sidebarDepth: 1,    // optional, defaults to 1
+        children: [
+          '/05-uart/',
+          '/05-uart/challenges/your-sensor/',
+        ]
+      },
       '/mbed-class-reference/',
       // '/01_crash_course_nodejs/',
       // '/02_bluetooth_on_rpi/',
