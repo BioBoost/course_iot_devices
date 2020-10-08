@@ -71,7 +71,6 @@ For demonstrational purpose we are using the USB UART here but it can be any UAR
 
 ```cpp
 #include "mbed.h"
-#include <string>
 
 static BufferedSerial pc(USBTX, USBRX, 115200);
 DigitalOut alive(LED1);
@@ -116,7 +115,6 @@ For demonstrational purpose we are using the USB UART here but it can be any UAR
 
 ```cpp
 #include "mbed.h"
-#include <string>
 
 static BufferedSerial pc(USBTX, USBRX, 115200);
 
@@ -134,7 +132,7 @@ int main() {
     // Read some bytes from the serial device
     uint8_t numberOfBytesRead = pc.read(buffer, MAXIMUM_BUFFER_SIZE);
 
-    printf("\nReceived: %s\n", buffer);
+    printf("\nReceived %d bytes: %s\n", numberOfBytesRead, buffer);
 
     // Adding some delay here as in real-world app we would require
     // some time to process input + want to show that the data is
