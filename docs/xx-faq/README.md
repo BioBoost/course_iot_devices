@@ -1,0 +1,2 @@
+Getting errors about certain classes that are not defined.
+=> Make sure you have correct version of mbed-os actually checked out. Don't believe the CLI. Just `git log` inside the `mbed-os` dir to make sure. You may need to manually checkout some version.

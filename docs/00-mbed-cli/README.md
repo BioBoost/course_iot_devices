@@ -40,6 +40,8 @@ sudo apt -y install gcc-arm-none-eabi binutils-arm-none-eabi
 sudo ln .local/bin/mbed /usr/local/bin
 ```
 
+<!-- If the `sudo apt -y install gcc-arm-none-eabi` doesn't work, just download the latest compiler as a tar and extract it somewhere. Set the path using `mbed config -G GCC_ARM_PATH "......./bin". Use `mbed config --global --list` to check. -->
+
 ## Getting Started
 
 Creating a new project:
