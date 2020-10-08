@@ -2,7 +2,7 @@
 
 The time has come you created your own sensor for a change.
 
-In this challenge you are to develop your own first sensor that will output its data via UART every number of seconds. The data that it output is totally up to you.
+In this challenge you are to develop your own first sensor that will **output its data via UART** every number of seconds. The data that it outputs is totally up to you.
 
 Some ideas:
 
@@ -14,9 +14,11 @@ Some ideas:
 * basic counter
 * ...
 
-Next up is the data format. You will need to select a simple data format that can be easily parsed when read by a host device that connects to the sensor. A basic start-of-frame character and end-of-frame character will make it easy to detect the start and end of a data frame. Pick something for yourself. A good example is `[` for SOF and `]` for EOF.
+Next up is the **data format**. You will need to select a simple data format that can be easily parsed when read by a host device that connects to the sensor. A basic start-of-frame character and end-of-frame character will make it easy to detect the start and end of a data frame. Pick something for yourself. A good example is `[` for SOF and `]` for EOF.
 
-We will be sending readable ASCII characters and not RAW bytes. Just keep that in mind. So in other words the number `12` will be send as the characters `1` and `2` and not as the byte value `12`. This will make it readable when intercepting the data with the computer. It will also make it much easier to parse. Making the conversing is straight-forward when using a function such as `sprintf()`.
+![Data Packet](./img/data-packet.png)
+
+We will be sending readable ASCII characters and not RAW bytes. Just keep that in mind. So in other words the number `12` will be send as the characters `1` and `2` and not as the byte value `12`. This will make it readable when intercepting the data with the computer. It will also make it much easier to parse. Making the conversion process straight-forward when using a function such as `sprintf()`.
 
 Together with the sensor data you will also need to send an ID. This can be anything. Even a string such as `DIDLY`. Just don't make it too long so the frame does not become to long.
 
@@ -47,5 +49,7 @@ Make sure to
 * at what interval is it sending data
 * what is the speed of the serial port
 * what port is the data being transmitted on
+
+Feel free to use [Draw.io](https://app.diagrams.net/) to create some diagrams.
 
 Make sure everything is in this datasheet that I need to know to work with this sensor.

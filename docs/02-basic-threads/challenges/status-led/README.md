@@ -29,6 +29,8 @@ Below is a UML class diagram of the class that should be created.
 ####################################
 ```
 
+<!-- Next year we need to elaborate on the fact that on and off are basic setter for time. Better rename to `onTime` and `offTime` -->
+
 ## Requirements
 
 What you need to know to solve this:
