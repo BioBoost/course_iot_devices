@@ -31,6 +31,16 @@ module.exports = {
           '/05-uart/challenges/your-sensor/',
         ]
       },
+      {
+        title: 'I2C',   // required
+        path: '/06-i2c/',      // optional, which should be a absolute path.
+        collapsable: false, // optional, defaults to true
+        sidebarDepth: 1,    // optional, defaults to 1
+        children: [
+          '/06-i2c/',
+          '/06-i2c/challenges/keypad-lock/',
+        ]
+      },
       '/mbed-class-reference/',
       // '/01_crash_course_nodejs/',
       // '/02_bluetooth_on_rpi/',
