@@ -86,6 +86,12 @@ The EEPROM dongles have a `24LC64T` chip on board that can be used to store 64kb
 
 The datasheet can be found at [http://ww1.microchip.com/downloads/en/devicedoc/21189r.pdf](http://ww1.microchip.com/downloads/en/devicedoc/21189r.pdf)
 
+The connections of the dongle are shown in the images below.
+
+![Chip Side](./img/dongle-chip-side.png)
+
+![Back Side](./img/dongle-back-side.png)
+
 <!-- WIT VLAK (pinnetjes weg van je):
 * LINKs: VCC
 * MIDDEN: SDA

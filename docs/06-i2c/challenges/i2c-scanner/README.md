@@ -1,0 +1,1 @@
+Another cool challenge would be to create an i2c scanner device that you can attach to any i2c bus and make scan the bus and display the found devices.
