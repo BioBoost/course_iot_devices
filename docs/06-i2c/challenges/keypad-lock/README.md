@@ -29,6 +29,8 @@ The TouchBerry Pi shield is a shield that can be plugged on top of the Raspberry
 
 <!-- You can find the schematic and component list on the project page at CircuitMaker [https://circuitmaker.com/Projects/Details/Sille-Van-Landschoot-2/TouchBerry-Pi](https://circuitmaker.com/Projects/Details/Sille-Van-Landschoot-2/TouchBerry-Pi). -->
 
+![Pinout](./img/touchberry-pi-v3-backside.png)
+
 ### Version 1.0
 
 ![Photo of the Touchberry Pi shield v1.0](./img/touchberry-pi-v1.jpg)
