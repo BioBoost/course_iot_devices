@@ -59,8 +59,8 @@ Remember that you need a pull-up resistor on sda and scl. All drivers on the I2C
 To setup the i2c bus all one needs to do is create an `I2C` (master) instance, connected to the specified pins.
 
 ```cpp
-I2C i2cBus(I2C_SDA, I2C_SCA);   // Use correct pins !
-i2c.frequency(100000);          // Defaults to 100kHz
+I2C i2cBus(I2C_SDA, I2C_SCL);   // Use correct pins !
+i2cBus.frequency(100000);          // Defaults to 100kHz
 ```
 
 If required, the bus speed can be changed with the `frequency` method.
@@ -106,7 +106,7 @@ const int address = 0x48 << 1;    // 0x48 is the 7-bit address
 const unsigned int EXPECTED_BYTES = 3;
 char buffer[EXPECTED_BYTES] = { 0 };
 
-i2c.read(address, buffer, EXPECTED_BYTES);
+i2cBus.read(address, buffer, EXPECTED_BYTES);
 ```
 
 ### Writing to the slave device
@@ -116,7 +116,7 @@ The `write()` method will allow one to write a number of bytes to an i2c slave d
 The prototype of the `write()` method is as follows:
 
 ```cpp
-int read (int address, const char * data, int length, bool repeated = false);
+int write (int address, const char * data, int length, bool repeated = false);
 ```
 
 Where:
@@ -146,7 +146,7 @@ const int address = 0x48 << 1;    // 0x48 is the 7-bit address
 const unsigned int PAYLOAD_SIZE = 3;
 char data[PAYLOAD_SIZE] = { 0x00, 0x01, 0x02 };
 
-i2c.write(address, data, PAYLOAD_SIZE);
+i2cBus.write(address, data, PAYLOAD_SIZE);
 ```
 
 ### Waiting between transactions
