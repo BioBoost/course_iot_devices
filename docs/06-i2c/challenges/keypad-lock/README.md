@@ -31,6 +31,8 @@ The TouchBerry Pi shield is a shield that can be plugged on top of the Raspberry
 
 ![Pinout](./img/touchberry-pi-v3-backside.png)
 
+**WARNING:** Don't turn all LEDs on at full brightness. Might take too much current from your USB !
+
 ### Version 1.0
 
 ![Photo of the Touchberry Pi shield v1.0](./img/touchberry-pi-v1.jpg)
