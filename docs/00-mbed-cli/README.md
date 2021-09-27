@@ -77,7 +77,9 @@ You can also add the `--sterm` option to `mbed compile -f` to compile a new prog
 mbed compile -f --sterm
 ```
 
-Or you can open the terminal manually using:
+Note that it is not possible at the moment to specify the baudrate of `sterm` with the command above.
+
+If using a baudrate different from `9600`, you can open the terminal manually using:
 
 ```bash
 mbed sterm --baudrate 115200

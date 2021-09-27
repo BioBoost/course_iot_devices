@@ -30,7 +30,7 @@ as `mbed-os/`.
 
 ## Printing to Serial over USB
 
-The Arm Mbed microcontroller on your board can communicate with a host PC over the same USB cable that you use for programming.
+Mbed OS redefines target-dependent I/O functions in the C library to allow you to use the C standard I/O library functions (`s\v\f\n\printf`, `scanf` and so on) in your application for printing to the console.
 
 This allows you to:
 
@@ -41,6 +41,8 @@ This allows you to:
 ::: warning Windows Serial Driver
 If you cannot connect to the mbed device via serial port, it might be necessary to install the mbed serial driver which can be found here [https://os.mbed.com/docs/mbed-os/v6.3/program-setup/windows-serial-driver.html](https://os.mbed.com/docs/mbed-os/v6.3/program-setup/windows-serial-driver.html).
 :::
+
+<!-- More info @ https://os.mbed.com/docs/mbed-os/v6.15/apis/serial-uart-apis.html#printing-to-the-console -->
 
 ### Basic Output
 
