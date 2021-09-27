@@ -1,26 +1,18 @@
 # Hello World
 
-Create new Program in *Mbed Studio* and select `mbed-os-example-blinky` as example program.
-
-This should result in:
-
 ```cpp
 #include "mbed.h"
 
-// Blinking rate in milliseconds
-#define BLINKING_RATE     500ms
+DigitalOut led(LED1);
 
-int main()
-{
-  // Initialise the digital pin LED1 as an output
-  DigitalOut led(LED1);
+int main() {
+  printf("Starting blinky ...\n");
 
-  while (true) {
+  while(true) {
+    ThisThread::sleep_for(chrono::milliseconds(500));
     led = !led;
-    ThisThread::sleep_for(BLINKING_RATE);
   }
 }
-
 ```
 
 This is the equivalent of the *Hello World* application. It's blinky. A small application that toggles an LED every `500ms`.
@@ -57,49 +49,26 @@ The following example prints a `"Hello World!"` message that you can view on a s
 ```cpp
 #include "mbed.h"
 
-// Blinking rate in milliseconds
-#define BLINKING_RATE     500ms
+DigitalOut led(LED1);
 
-int main()
-{
-    // Initialise the digital pin LED1 as an output
-    DigitalOut led(LED1);
+int main() {
+  printf("Starting blinky ...\n");
 
-    printf("Hello World!\n");
+  uint8_t counter = 0;
 
-    while (true) {
-        led = !led;
-        ThisThread::sleep_for(BLINKING_RATE);
-    }
+  while(true) {
+    ThisThread::sleep_for(chrono::milliseconds(500));
+    led = !led;
+    printf("Counting %d\n", counter++);
+  }
 }
 ```
 
-In Mbed Studio you can now open the `Serial Monitor` from the view menu. The standard speed at which the port is configured is `9600 baud`.
+To view the serial output use a serial terminal emulator such as Putty which can be found at [https://www.putty.org/](https://www.putty.org/).
 
 ::: warning Baudrate Mismatch
-If you get gibberish (example: `ö’ö’ƒÕ•¬­ƒ´¼Õƒö­“ƒ²ƒƒƒ¬‘¼¬Õ”’­­“ƒ¬•`) in the Serial Monitor output than you have a mismatch in your communication speeds. Make sure both are sending and listening at the same baudrate.
+If you get gibberish (example: `ö’ö’ƒÕ•¬­ƒ´¼Õƒö­“ƒ²ƒƒƒ¬‘¼¬Õ”’­­“ƒ¬•`) in the output than you have a mismatch in your communication speeds. Make sure both are sending and listening at the same baudrate.
 :::
 
-If you wish to configure the serial channel to use a different baudrate, you can just create a global `BufferedSerial` object and pass the baudrate as the third parameter:
 
-```cpp{6}
-#include "mbed.h"
-
-// Blinking rate in milliseconds
-#define BLINKING_RATE     500ms
-
-static BufferedSerial pc(USBTX, USBRX, 115200);
-
-int main()
-{
-    // Initialise the digital pin LED1 as an output
-    DigitalOut led(LED1);
-
-    printf("Hello World!\n");
-
-    while (true) {
-        led = !led;
-        ThisThread::sleep_for(BLINKING_RATE);
-    }
-}
-```
+If you wish to configure the serial channel to use a different baudrate, you can change it in the `mbed_app.json` file.
