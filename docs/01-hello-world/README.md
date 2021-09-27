@@ -74,3 +74,76 @@ If you get gibberish (example: `ö’ö’ƒÕ•¬­ƒ´¼Õƒö­“ƒ²ƒƒƒ
 
 
 If you wish to configure the serial channel to use a different baudrate, you can change it in the `mbed_app.json` file.
+
+## Basic Input
+
+Using `scanf()` one can read some basic input into the platform coming from the computer side.
+
+```cpp
+#include "mbed.h"
+
+DigitalOut led(LED1);
+
+int main() {
+  printf("Starting blinky ...\n");
+
+  char buffer[20];
+  do {
+    printf("Please enter start command: ");
+    scanf("%s", buffer);
+  } while (strcmp(buffer, "start") != 0);
+  printf("Detected start\n");
+
+  uint8_t counter = 0;
+  while(true) {
+    ThisThread::sleep_for(chrono::milliseconds(500));
+    led = !led;
+    printf("Counting %d\n", counter++);
+  }
+}
+```
+
+You can even read for example integer values from stdin:
+
+```cpp
+int value = 0;
+
+printf("Please enter value: ");
+scanf("%d", &value);
+```
+
+The problem here however is that `scanf()` is not really very safe. It fails when the buffer overflows or when an invalid number is entered.
+
+Using `fgets()` and `strtol()` is much safer.
+
+```cpp
+#include "mbed.h"
+
+DigitalOut led(LED1);
+
+int main() {
+  ThisThread::sleep_for(chrono::milliseconds(2000));
+  printf("Starting blinky ...\n");
+
+  char buffer[21];
+  int test = 0;
+  do {
+    printf("Please enter 12 to start: ");
+    fgets(buffer, 20, stdin);   // Read into buffer, from stdin for max 20 characters
+    test = strtol(buffer, NULL, 10);  // Safer than atoi (10 = base)
+  } while (test != 12);
+  printf("Detected start\n");
+
+  uint8_t counter = 0;
+  while(true) {
+    ThisThread::sleep_for(chrono::milliseconds(500));
+    led = !led;
+    printf("Counting %d\n", counter++);
+  }
+}
+```
+
+More info:
+
+* [https://www.cplusplus.com/reference/cstdlib/strtol/](https://www.cplusplus.com/reference/cstdlib/strtol/)
+* [https://www.cplusplus.com/reference/cstdio/fgets](https://www.cplusplus.com/reference/cstdio/fgets)
