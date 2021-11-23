@@ -24,6 +24,8 @@ void blink(void) {
 
 int main()
 {
+    // Just printf is not good idea => READ https://os.mbed.com/docs/mbed-os/v6.15/apis/serial-uart-apis.html#printing-to-the-console
+    // We are mixing BufferedSerial and internal instance
     printf("Starting Command Demo\n");
 
     // Application buffer to receive the data

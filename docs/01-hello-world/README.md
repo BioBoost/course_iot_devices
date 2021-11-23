@@ -1,26 +1,18 @@
 # Hello World
 
-Create new Program in *Mbed Studio* and select `mbed-os-example-blinky` as example program.
-
-This should result in:
-
 ```cpp
 #include "mbed.h"
 
-// Blinking rate in milliseconds
-#define BLINKING_RATE     500ms
+DigitalOut led(LED1);
 
-int main()
-{
-  // Initialise the digital pin LED1 as an output
-  DigitalOut led(LED1);
+int main() {
+  printf("Starting blinky ...\n");
 
-  while (true) {
+  while(true) {
+    ThisThread::sleep_for(chrono::milliseconds(500));
     led = !led;
-    ThisThread::sleep_for(BLINKING_RATE);
   }
 }
-
 ```
 
 This is the equivalent of the *Hello World* application. It's blinky. A small application that toggles an LED every `500ms`.
@@ -38,7 +30,7 @@ as `mbed-os/`.
 
 ## Printing to Serial over USB
 
-The Arm Mbed microcontroller on your board can communicate with a host PC over the same USB cable that you use for programming.
+Mbed OS redefines target-dependent I/O functions in the C library to allow you to use the C standard I/O library functions (`s\v\f\n\printf`, `scanf` and so on) in your application for printing to the console.
 
 This allows you to:
 
@@ -50,6 +42,8 @@ This allows you to:
 If you cannot connect to the mbed device via serial port, it might be necessary to install the mbed serial driver which can be found here [https://os.mbed.com/docs/mbed-os/v6.3/program-setup/windows-serial-driver.html](https://os.mbed.com/docs/mbed-os/v6.3/program-setup/windows-serial-driver.html).
 :::
 
+<!-- More info @ https://os.mbed.com/docs/mbed-os/v6.15/apis/serial-uart-apis.html#printing-to-the-console -->
+
 ### Basic Output
 
 The following example prints a `"Hello World!"` message that you can view on a serial terminal. Mbed OS redirects any `printf()` statements to the board's debug USB serial.
@@ -57,49 +51,99 @@ The following example prints a `"Hello World!"` message that you can view on a s
 ```cpp
 #include "mbed.h"
 
-// Blinking rate in milliseconds
-#define BLINKING_RATE     500ms
+DigitalOut led(LED1);
 
-int main()
-{
-    // Initialise the digital pin LED1 as an output
-    DigitalOut led(LED1);
+int main() {
+  printf("Starting blinky ...\n");
 
-    printf("Hello World!\n");
+  uint8_t counter = 0;
 
-    while (true) {
-        led = !led;
-        ThisThread::sleep_for(BLINKING_RATE);
-    }
+  while(true) {
+    ThisThread::sleep_for(chrono::milliseconds(500));
+    led = !led;
+    printf("Counting %d\n", counter++);
+  }
 }
 ```
 
-In Mbed Studio you can now open the `Serial Monitor` from the view menu. The standard speed at which the port is configured is `9600 baud`.
+To view the serial output use a serial terminal emulator such as Putty which can be found at [https://www.putty.org/](https://www.putty.org/).
 
 ::: warning Baudrate Mismatch
-If you get gibberish (example: `ö’ö’ƒÕ•¬­ƒ´¼Õƒö­“ƒ²ƒƒƒ¬‘¼¬Õ”’­­“ƒ¬•`) in the Serial Monitor output than you have a mismatch in your communication speeds. Make sure both are sending and listening at the same baudrate.
+If you get gibberish (example: `ö’ö’ƒÕ•¬­ƒ´¼Õƒö­“ƒ²ƒƒƒ¬‘¼¬Õ”’­­“ƒ¬•`) in the output than you have a mismatch in your communication speeds. Make sure both are sending and listening at the same baudrate.
 :::
 
-If you wish to configure the serial channel to use a different baudrate, you can just create a global `BufferedSerial` object and pass the baudrate as the third parameter:
 
-```cpp{6}
+If you wish to configure the serial channel to use a different baudrate, you can change it in the `mbed_app.json` file.
+
+## Basic Input
+
+Using `scanf()` one can read some basic input into the platform coming from the computer side.
+
+```cpp
 #include "mbed.h"
 
-// Blinking rate in milliseconds
-#define BLINKING_RATE     500ms
+DigitalOut led(LED1);
 
-static BufferedSerial pc(USBTX, USBRX, 115200);
+int main() {
+  printf("Starting blinky ...\n");
 
-int main()
-{
-    // Initialise the digital pin LED1 as an output
-    DigitalOut led(LED1);
+  char buffer[20];
+  do {
+    printf("Please enter start command: ");
+    scanf("%s", buffer);
+  } while (strcmp(buffer, "start") != 0);
+  printf("Detected start\n");
 
-    printf("Hello World!\n");
-
-    while (true) {
-        led = !led;
-        ThisThread::sleep_for(BLINKING_RATE);
-    }
+  uint8_t counter = 0;
+  while(true) {
+    ThisThread::sleep_for(chrono::milliseconds(500));
+    led = !led;
+    printf("Counting %d\n", counter++);
+  }
 }
 ```
+
+You can even read for example integer values from stdin:
+
+```cpp
+int value = 0;
+
+printf("Please enter value: ");
+scanf("%d", &value);
+```
+
+The problem here however is that `scanf()` is not really very safe. It fails when the buffer overflows or when an invalid number is entered.
+
+Using `fgets()` and `strtol()` is much safer.
+
+```cpp
+#include "mbed.h"
+
+DigitalOut led(LED1);
+
+int main() {
+  ThisThread::sleep_for(chrono::milliseconds(2000));
+  printf("Starting blinky ...\n");
+
+  char buffer[21];
+  int test = 0;
+  do {
+    printf("Please enter 12 to start: ");
+    fgets(buffer, 20, stdin);   // Read into buffer, from stdin for max 20 characters
+    test = strtol(buffer, NULL, 10);  // Safer than atoi (10 = base)
+  } while (test != 12);
+  printf("Detected start\n");
+
+  uint8_t counter = 0;
+  while(true) {
+    ThisThread::sleep_for(chrono::milliseconds(500));
+    led = !led;
+    printf("Counting %d\n", counter++);
+  }
+}
+```
+
+More info:
+
+* [https://www.cplusplus.com/reference/cstdlib/strtol/](https://www.cplusplus.com/reference/cstdlib/strtol/)
+* [https://www.cplusplus.com/reference/cstdio/fgets](https://www.cplusplus.com/reference/cstdio/fgets)
