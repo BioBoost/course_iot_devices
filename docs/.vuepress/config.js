@@ -20,17 +20,19 @@ module.exports = {
       //   ]
       // },
       // '/03-interrupts/',
-      // {
-      //   title: 'Serial Communication',   // required
-      //   // path: '/05-uart/',      // optional, which should be a absolute path.
-      //   collapsable: false, // optional, defaults to true
-      //   sidebarDepth: 1,    // optional, defaults to 1
-      //   children: [
-      //     '/04-serial-communication/',
-      //     '/05-uart/',
-      //     // '/05-uart/challenges/your-sensor/',
-      //   ]
-      // },
+      {
+        title: 'Serial Communication',   // required
+        // path: '/05-uart/',      // optional, which should be a absolute path.
+        collapsable: false, // optional, defaults to true
+        sidebarDepth: 1,    // optional, defaults to 1
+        children: [
+          '/04-serial-communication/',
+          '/06-i2c/',
+          '/07-spi/',
+          // '/05-uart/',
+          // '/05-uart/challenges/your-sensor/',
+        ]
+      },
       // {
       //   title: 'I2C',   // required
       //   path: '/06-i2c/',      // optional, which should be a absolute path.
@@ -38,7 +40,17 @@ module.exports = {
       //   sidebarDepth: 1,    // optional, defaults to 1
       //   children: [
       //     '/06-i2c/',
-      //     '/06-i2c/challenges/keypad-lock/',
+      //     // '/06-i2c/challenges/keypad-lock/',
+      //   ]
+      // },
+      // {
+      //   title: 'SPI',   // required
+      //   path: '/06-i2c/',      // optional, which should be a absolute path.
+      //   collapsable: false, // optional, defaults to true
+      //   sidebarDepth: 1,    // optional, defaults to 1
+      //   children: [
+      //     '/06-i2c/',
+      //     // '/06-i2c/challenges/keypad-lock/',
       //   ]
       // },
       '/mbed-class-reference/',

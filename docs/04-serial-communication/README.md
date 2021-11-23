@@ -10,6 +10,8 @@ Furthermore parallel communication is more expensive
 * More lines
 * More pins
 
+## Serial Communication
+
 2 types:
 
 * **Asynchronous:** Byte oriented, synchronization with a frame, which consists of data bits and control, status, synchronization bits
